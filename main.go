@@ -21,8 +21,17 @@ func main() {
 
 	// manejar rutas
 	r := mux.NewRouter()
-
+	// index
 	r.HandleFunc("/", routes.HomeHandler)
+
+	s := r.PathPrefix("/api/v1").Subrouter()
+
+	// productos
+	s.HandleFunc("/products", routes.GetProducts).Methods("GET")
+	s.HandleFunc("/products/{id}", routes.GetProduct).Methods("GET")
+	s.HandleFunc("/products", routes.CreateProduct).Methods("POST")
+	s.HandleFunc("/products/{id}", routes.UpdateProduct).Methods("PUT")
+	s.HandleFunc("/products/{id}", routes.DeleteProduct).Methods("DELETE")
 
 	// iniciar servidor
 	log.Println("Servidor iniciado en http://localhost:3000")
